@@ -1,0 +1,31 @@
+<!-- templates/fixtures.html -->
+{% extends 'base.html' %} {% block title %}Fixture{% endblock %} {% block
+content %}
+<div class="container-fluid px-0">
+  <h2 class="mb-4">Fixture</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Local</th>
+          <th>Visitante</th>
+          <th>Fecha</th>
+          <th>Marcador</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in fixtures %}
+        <tr>
+          <td>{{ f.id }}</td>
+          <td>{{ f.home_team.name }}</td>
+          <td>{{ f.away_team.name }}</td>
+          <td>{{ f.date.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ f.score_home or '-' }} - {{ f.score_away or '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!-- templates/dashboard.html -->
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+<div class="container-fluid px-0">
+  <div class="card p-4 shadow-sm mt-4 mx-auto" style="max-width: 500px">
+    <h2 class="mb-3 text-center">Bienvenido, {{ user.username }}!</h2>
+    <p class="mb-4 text-center">
+      Rol: <span class="badge bg-info text-dark">{{ user.role }}</span>
+    </p>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <a href="{{ url_for('main.teams') }}">Ver Equipos</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{{ url_for('main.fixtures') }}">Ver Fixture</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{{ url_for('main.results') }}">Ver Resultados</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{{ url_for('main.cantina') }}">Reservas de Cantina</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{{ url_for('main.sponsors') }}">Sponsors</a>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

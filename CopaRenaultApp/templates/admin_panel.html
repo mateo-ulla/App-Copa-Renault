@@ -1,0 +1,85 @@
+<!-- templates/admin_panel.html -->
+{% extends 'base.html' %} {% block title %}Panel de Administración{% endblock %}
+{% block content %}
+<h2>Panel de Administración</h2>
+<h4>Usuarios</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Usuario</th>
+      <th>Rol</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.username }}</td>
+      <td>{{ u.role }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h4>Equipos</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Deporte</th>
+      <th>Categoría</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in teams %}
+    <tr>
+      <td>{{ t.id }}</td>
+      <td>{{ t.name }}</td>
+      <td>{{ t.sport }}</td>
+      <td>{{ t.category }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h4>Fixtures</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Local</th>
+      <th>Visitante</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for f in fixtures %}
+    <tr>
+      <td>{{ f.id }}</td>
+      <td>{{ f.home_team.name }}</td>
+      <td>{{ f.away_team.name }}</td>
+      <td>{{ f.date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h4>Sponsors</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Web</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in sponsors %}
+    <tr>
+      <td>{{ s.id }}</td>
+      <td>{{ s.name }}</td>
+      <td><a href="{{ s.website }}" target="_blank">Enlace</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

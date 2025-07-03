@@ -1,0 +1,202 @@
+/* Copia de los estilos principales para servir desde /static/css/ */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", Arial, sans-serif;
+  background: #ffa000;
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+#main-app-content {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.navbar {
+  background: #ffb300;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+.navbar a {
+  color: #000;
+  text-decoration: none;
+  margin: 0 1rem;
+  font-weight: bold;
+}
+
+.main-hero {
+  display: flex;
+  min-height: 80vh;
+  width: 100vw;
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+  background: #ffa000;
+}
+.main-hero-left {
+  display: none;
+}
+.main-hero-right {
+  flex: none;
+  background: #ffa000;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  width: 100vw;
+}
+.main-hero-content {
+  text-align: center;
+  background: none;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.main-hero-logo {
+  margin-bottom: 1.5rem;
+}
+.copa-logo {
+  width: 180px;
+  max-width: 90vw;
+}
+.main-hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1.2rem;
+  letter-spacing: 2px;
+}
+.main-hero-renault {
+  margin-bottom: 1.5rem;
+}
+.renault-logo {
+  width: 70px;
+  max-width: 20vw;
+}
+.main-hero-btn {
+  display: inline-block;
+  background: #ffb300;
+  color: #222;
+  font-weight: 600;
+  padding: 0.9rem 2.5rem;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background 0.2s, color 0.2s;
+  margin-top: 1.5rem;
+}
+.main-hero-btn:hover {
+  background: #ffa000;
+  color: #fff;
+}
+.footer {
+  background: #212121;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+  width: 100%;
+}
+.table-responsive {
+  overflow-x: auto;
+}
+.table {
+  min-width: 600px;
+}
+.form-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  padding: 2rem;
+}
+.form-container input,
+.form-container select {
+  margin-bottom: 1rem;
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.form-container button {
+  width: 100%;
+  background: #ffb300;
+  color: #222;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 1.1rem;
+  transition: background 0.2s;
+}
+.form-container button:hover {
+  background: #ffa000;
+  color: #fff;
+}
+@media (max-width: 1200px) {
+  .main-hero {
+    flex-direction: column;
+    min-height: 70vh;
+  }
+  .main-hero-left,
+  .main-hero-right {
+    flex: none;
+    width: 100vw;
+    min-height: 40vh;
+  }
+  .main-hero-content {
+    max-width: 90vw;
+  }
+}
+@media (max-width: 900px) {
+  .main-hero {
+    flex-direction: column;
+  }
+  .main-hero-left,
+  .main-hero-right {
+    flex: none;
+    width: 100%;
+    min-height: 40vh;
+  }
+  .main-hero-content {
+    max-width: 90vw;
+  }
+  .table {
+    min-width: 400px;
+  }
+}
+@media (max-width: 600px) {
+  .main-hero-content {
+    padding: 1rem;
+    max-width: 98vw;
+  }
+  .copa-logo {
+    width: 120px;
+  }
+  .main-hero-title {
+    font-size: 1.5rem;
+  }
+  .renault-logo {
+    width: 40px;
+  }
+  .main-hero-btn {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+  }
+  .form-container {
+    padding: 1rem;
+  }
+}

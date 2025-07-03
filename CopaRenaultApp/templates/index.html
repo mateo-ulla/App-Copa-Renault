@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block title %}Inicio{% endblock %} {% block content
+%}
+<div class="main-hero">
+  <div class="main-hero-right">
+    <div class="main-hero-content">
+      <div class="main-hero-logo">
+        <img
+          src="{{ url_for('static', filename='images/copa-renault-logo.png') }}"
+          alt="Copa Renault Logo"
+          class="copa-logo"
+        />
+      </div>
+      <h1 class="main-hero-title">COPA RENAULT</h1>
+      <div class="main-hero-renault">
+        <img
+          src="{{ url_for('static', filename='images/renault-logo.png') }}"
+          alt="Renault Logo"
+          class="renault-logo"
+        />
+      </div>
+      <a href="{{ url_for('main.login') }}" class="main-hero-btn"
+        >Iniciar sesión</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}
