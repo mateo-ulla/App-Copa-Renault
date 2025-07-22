@@ -161,3 +161,61 @@ def admin_panel():
     fixtures = Fixture.query.all()
     sponsors = Sponsor.query.all()
     return render_template('admin_panel.html', users=users, teams=teams, fixtures=fixtures, sponsors=sponsors)
+
+# NUEVAS RUTAS Y FUNCIONALIDADES
+@main_bp.route('/profile', methods=['GET', 'POST'])
+@jwt_required()
+def edit_profile():
+    uid = get_jwt_identity()
+    user = User.query.get(uid)
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form.get('email', user.email)
+        password = request.form.get('password')
+        if username:
+            user.username = username
+        if email:
+            user.email = email
+        if password:
+            user.set_password(password)
+        db.session.commit()
+        flash('Perfil actualizado')
+        return redirect(url_for('main.edit_profile'))
+    return render_template('profile.html', current_user=user)
+
+@main_bp.route('/manage_teams', methods=['GET', 'POST'])
+@admin_required
+def manage_teams():
+    if request.method == 'POST':
+        name = request.form['name']
+        sport = request.form['sport']
+        category = request.form['category']
+        team = Team(name=name, sport=sport, category=category)
+        db.session.add(team)
+        db.session.commit()
+        flash('Equipo creado')
+        return redirect(url_for('main.manage_teams'))
+    teams = Team.query.all()
+    return render_template('manage_teams.html', teams=teams)
+
+@main_bp.route('/manage_teams/delete/<int:team_id>', methods=['POST'])
+@admin_required
+def delete_team_admin(team_id):
+    team = Team.query.get_or_404(team_id)
+    db.session.delete(team)
+    db.session.commit()
+    flash('Equipo eliminado')
+    return redirect(url_for('main.manage_teams'))
+
+@main_bp.route('/manage_teams/edit/<int:team_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_team_admin(team_id):
+    team = Team.query.get_or_404(team_id)
+    if request.method == 'POST':
+        team.name = request.form['name']
+        team.sport = request.form['sport']
+        team.category = request.form['category']
+        db.session.commit()
+        flash('Equipo modificado')
+        return redirect(url_for('main.manage_teams'))
+    return render_template('manage_teams.html', edit_team=team, teams=Team.query.all())
