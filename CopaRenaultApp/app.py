@@ -3,7 +3,7 @@ from config import Config
 from models import db
 from routes import main_bp
 from flask_jwt_extended import JWTManager
-
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -15,15 +15,13 @@ def before_request():
         url = request.url.replace('http://', 'https://', 1)
         return redirect(url, code=301)
 
-
 # Inicializar extensiones
 db.init_app(app)
 jwt = JWTManager(app)
-
+migrate = Migrate(app, db)
 
 # Registrar blueprint
 app.register_blueprint(main_bp)
-
 
 if __name__ == '__main__':
     with app.app_context():
