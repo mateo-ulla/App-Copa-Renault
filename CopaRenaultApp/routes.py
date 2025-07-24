@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, session
+from models import User
 from models import db, User, Team, Fixture, CantinaReservation, Sponsor
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, set_access_cookies, unset_jwt_cookies
 from datetime import timedelta, datetime
@@ -20,7 +21,10 @@ def admin_required(fn):
 
 @main_bp.route('/')
 def index():
-    return render_template('index.html')
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('index.html', current_user=user)
 
 
 @main_bp.route('/register', methods=['GET','POST'])
@@ -29,16 +33,23 @@ def register():
         username = request.form['username']
         password = request.form['password']
         role = request.form['role']
+        email = request.form.get('email')
         if User.query.filter_by(username=username).first():
             flash('Usuario existente')
             return redirect(url_for('main.register'))
-        user = User(username=username, role=role)
+        if email and User.query.filter_by(email=email).first():
+            flash('Email ya registrado')
+            return redirect(url_for('main.register'))
+        user = User(username=username, role=role, email=email)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
         flash('Registro exitoso, ahora puedes iniciar sesión')
         return redirect(url_for('main.login'))
-    return render_template('register.html')
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('register.html', current_user=user)
 
 
 @main_bp.route('/login', methods=['GET','POST'])
@@ -48,14 +59,17 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
-            access_token = create_access_token(identity=user.id, expires_delta=timedelta(hours=1))
+            access_token = create_access_token(identity=str(user.id), expires_delta=timedelta(hours=1))
             resp = redirect(url_for('main.dashboard'))
             set_access_cookies(resp, access_token)
             session['user_id'] = user.id
             return resp
         flash('Credenciales inválidas')
         return redirect(url_for('main.login'))
-    return render_template('login.html')
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('login.html', current_user=user)
 
 
 @main_bp.route('/logout')
@@ -72,7 +86,7 @@ def logout():
 def dashboard():
     uid = get_jwt_identity()
     user = User.query.get(uid)
-    return render_template('dashboard.html', user=user)
+    return render_template('dashboard.html', user=user, current_user=user)
 
 
 @main_bp.route('/teams', methods=['GET', 'POST'])
@@ -88,7 +102,10 @@ def teams():
         flash('Equipo creado')
         return redirect(url_for('main.teams'))
     data = Team.query.all()
-    return render_template('teams.html', teams=data)
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('teams.html', teams=data, current_user=user)
 
 
 @main_bp.route('/teams/delete/<int:team_id>', methods=['POST'])
@@ -110,7 +127,10 @@ def fixtures():
         f1 = Dummy(); f1.id=1; f1.home_team=Dummy(); f1.home_team.name='Renault FC'; f1.away_team=Dummy(); f1.away_team.name='Peugeot United'; f1.date=datetime(2025,7,10,18,0); f1.score_home=2; f1.score_away=1
         f2 = Dummy(); f2.id=2; f2.home_team=Dummy(); f2.home_team.name='Citroën Stars'; f2.away_team=Dummy(); f2.away_team.name='Fiat Power'; f2.date=datetime(2025,7,11,20,0); f2.score_home=0; f2.score_away=0
         data = [f1, f2]
-    return render_template('fixtures.html', fixtures=data)
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('fixtures.html', fixtures=data, current_user=user)
 
 
 @main_bp.route('/results')
@@ -122,7 +142,10 @@ def results():
         f1 = Dummy(); f1.id=1; f1.home_team=Dummy(); f1.home_team.name='Renault FC'; f1.away_team=Dummy(); f1.away_team.name='Peugeot United'; f1.score_home=2; f1.score_away=1
         f2 = Dummy(); f2.id=2; f2.home_team=Dummy(); f2.home_team.name='Citroën Stars'; f2.away_team=Dummy(); f2.away_team.name='Fiat Power'; f2.score_home=0; f2.score_away=0
         data = [f1, f2]
-    return render_template('results.html', fixtures=data)
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('results.html', fixtures=data, current_user=user)
 
 
 @main_bp.route('/cantina', methods=['GET', 'POST'])
@@ -138,7 +161,10 @@ def cantina():
         flash('Reserva realizada')
         return redirect(url_for('main.cantina'))
     data = CantinaReservation.query.all()
-    return render_template('cantina.html', reservations=data)
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('cantina.html', reservations=data, current_user=user)
 
 
 @main_bp.route('/sponsors')
@@ -150,7 +176,10 @@ def sponsors():
         s1 = Dummy(); s1.id=1; s1.name='Renault'; s1.website='https://www.renault.com'; s1.banner_url='https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Renault_2021_logo.svg/512px-Renault_2021_logo.svg.png'
         s2 = Dummy(); s2.id=2; s2.name='Peugeot'; s2.website='https://www.peugeot.com'; s2.banner_url='https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Peugeot_Logo.svg/512px-Peugeot_Logo.svg.png'
         data = [s1, s2]
-    return render_template('sponsors.html', sponsors=data)
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('sponsors.html', sponsors=data, current_user=user)
 
 
 @main_bp.route('/admin')
@@ -160,7 +189,10 @@ def admin_panel():
     teams = Team.query.all()
     fixtures = Fixture.query.all()
     sponsors = Sponsor.query.all()
-    return render_template('admin_panel.html', users=users, teams=teams, fixtures=fixtures, sponsors=sponsors)
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('admin_panel.html', users=users, teams=teams, fixtures=fixtures, sponsors=sponsors, current_user=user)
 
 # NUEVAS RUTAS Y FUNCIONALIDADES
 @main_bp.route('/profile', methods=['GET', 'POST'])
@@ -172,9 +204,15 @@ def edit_profile():
         username = request.form['username']
         email = request.form.get('email', user.email)
         password = request.form.get('password')
-        if username:
+        if username and username != user.username:
+            if User.query.filter_by(username=username).first():
+                flash('Usuario ya existe')
+                return redirect(url_for('main.edit_profile'))
             user.username = username
-        if email:
+        if email and email != user.email:
+            if User.query.filter_by(email=email).first():
+                flash('Email ya registrado')
+                return redirect(url_for('main.edit_profile'))
             user.email = email
         if password:
             user.set_password(password)
@@ -196,11 +234,14 @@ def manage_teams():
         flash('Equipo creado')
         return redirect(url_for('main.manage_teams'))
     teams = Team.query.all()
-    return render_template('manage_teams.html', teams=teams)
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('manage_teams.html', teams=teams, current_user=user)
 
 @main_bp.route('/manage_teams/delete/<int:team_id>', methods=['POST'])
 @admin_required
-def delete_team_admin(team_id):
+def manage_teams_delete(team_id):
     team = Team.query.get_or_404(team_id)
     db.session.delete(team)
     db.session.commit()
@@ -209,7 +250,7 @@ def delete_team_admin(team_id):
 
 @main_bp.route('/manage_teams/edit/<int:team_id>', methods=['GET', 'POST'])
 @admin_required
-def edit_team_admin(team_id):
+def manage_teams_edit(team_id):
     team = Team.query.get_or_404(team_id)
     if request.method == 'POST':
         team.name = request.form['name']
@@ -218,4 +259,7 @@ def edit_team_admin(team_id):
         db.session.commit()
         flash('Equipo modificado')
         return redirect(url_for('main.manage_teams'))
-    return render_template('manage_teams.html', edit_team=team, teams=Team.query.all())
+    user = None
+    if session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    return render_template('manage_teams.html', edit_team=team, teams=Team.query.all(), current_user=user)
