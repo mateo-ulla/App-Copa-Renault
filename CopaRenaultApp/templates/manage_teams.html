@@ -1,18 +1,32 @@
-{% extends 'base.html' %}
-{% block title %}Gestión de Equipos{% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% block title %}Gestión de Equipos{% endblock %} {%
+block content %}
 <div class="container-fluid px-0">
   <h2 class="mb-4">Gestión de Equipos</h2>
   <form action="" method="post" class="mb-4">
     <div class="row g-2">
       <div class="col-md-4">
-        <input name="name" class="form-control" placeholder="Nombre del equipo" required />
+        <input
+          name="name"
+          class="form-control"
+          placeholder="Nombre del equipo"
+          required
+        />
       </div>
       <div class="col-md-3">
-        <input name="sport" class="form-control" placeholder="Deporte" required />
+        <input
+          name="sport"
+          class="form-control"
+          placeholder="Deporte"
+          required
+        />
       </div>
       <div class="col-md-3">
-        <input name="category" class="form-control" placeholder="Categoría" required />
+        <input
+          name="category"
+          class="form-control"
+          placeholder="Categoría"
+          required
+        />
       </div>
       <div class="col-md-2">
         <button type="submit" class="btn btn-success w-100">Dar de alta</button>
@@ -38,10 +52,20 @@
           <td>{{ team.sport }}</td>
           <td>{{ team.category }}</td>
           <td>
-            <form action="{{ url_for('main.manage_teams_delete', team_id=team.id) }}" method="post" style="display:inline-block">
-              <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+            <form
+              action="{{ url_for('main.manage_teams_delete', team_id=team.id) }}"
+              method="post"
+              style="display: inline-block"
+            >
+              <button type="submit" class="btn btn-danger btn-sm">
+                Eliminar
+              </button>
             </form>
-            <a href="{{ url_for('main.manage_teams_edit', team_id=team.id) }}" class="btn btn-warning btn-sm">Editar</a>
+            <a
+              href="{{ url_for('main.manage_teams_edit', team_id=team.id) }}"
+              class="btn btn-warning btn-sm"
+              >Editar</a
+            >
           </td>
         </tr>
         {% endfor %}
@@ -51,16 +75,34 @@
   {% if edit_team %}
   <div class="mt-4">
     <h4>Editar equipo</h4>
-    <form action="{{ url_for('main.manage_teams_edit', team_id=edit_team.id) }}" method="post">
+    <form
+      action="{{ url_for('main.manage_teams_edit', team_id=edit_team.id) }}"
+      method="post"
+    >
       <div class="row g-2">
         <div class="col-md-4">
-          <input name="name" class="form-control" value="{{ edit_team.name }}" required />
+          <input
+            name="name"
+            class="form-control"
+            value="{{ edit_team.name }}"
+            required
+          />
         </div>
         <div class="col-md-3">
-          <input name="sport" class="form-control" value="{{ edit_team.sport }}" required />
+          <input
+            name="sport"
+            class="form-control"
+            value="{{ edit_team.sport }}"
+            required
+          />
         </div>
         <div class="col-md-3">
-          <input name="category" class="form-control" value="{{ edit_team.category }}" required />
+          <input
+            name="category"
+            class="form-control"
+            value="{{ edit_team.category }}"
+            required
+          />
         </div>
         <div class="col-md-2">
           <button type="submit" class="btn btn-primary w-100">Guardar</button>

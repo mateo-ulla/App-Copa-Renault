@@ -130,39 +130,57 @@
               <a class="nav-link" href="{{ url_for('main.teams') }}">Equipos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('main.fixtures') }}">Fixture</a>
+              <a class="nav-link" href="{{ url_for('main.fixtures') }}"
+                >Fixture</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('main.results') }}">Resultados</a>
+              <a class="nav-link" href="{{ url_for('main.results') }}"
+                >Resultados</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('main.cantina') }}">Reservas de la cantina</a>
+              <a class="nav-link" href="{{ url_for('main.cantina') }}"
+                >Cantina</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('main.sponsors') }}">Sponsors</a>
+              <a class="nav-link" href="{{ url_for('main.sponsors') }}"
+                >Sponsors</a
+              >
             </li>
-            {% if session.get('user_id') %}
-              {% if current_user and current_user.role == 'administrador' %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.manage_teams') }}">Gestión de equipos</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.admin_panel') }}">Panel Admin</a>
-              </li>
-              {% endif %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.edit_profile') }}">Perfil</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.logout') }}">Salir</a>
-              </li>
+            {% if session.get('user_id') %} {% if current_user and
+            current_user.role == 'administrador' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.manage_teams') }}"
+                >Gestión de equipos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.admin_panel') }}"
+                >Panel Admin</a
+              >
+            </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.edit_profile') }}"
+                >Perfil</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.logout') }}">Salir</a>
+            </li>
             {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.register') }}">Registrarse</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.login') }}">Iniciar sesión</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.register') }}"
+                >Registrarse</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.login') }}"
+                >Iniciar sesión</a
+              >
+            </li>
             {% endif %}
           </ul>
         </div>

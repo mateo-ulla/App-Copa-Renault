@@ -23,6 +23,19 @@ migrate = Migrate(app, db)
 # Registrar blueprint
 app.register_blueprint(main_bp)
 
+# Imports necesarios para el manejador de error
+from flask import flash, session, url_for
+
+
+from jwt.exceptions import ExpiredSignatureError
+@app.errorhandler(ExpiredSignatureError)
+def handle_expired_token(e):
+    flash('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.')
+    session.clear()
+    resp = redirect(url_for('main.login'))
+    resp.delete_cookie('access_token_cookie')
+    return resp
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
