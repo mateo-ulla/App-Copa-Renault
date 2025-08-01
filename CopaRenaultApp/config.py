@@ -14,7 +14,7 @@ class Config:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
     JWT_TOKEN_LOCATION = ['cookies']
-    JWT_COOKIE_SECURE = False  # True si usas HTTPS en producción
+    JWT_COOKIE_SECURE = False  
     JWT_ACCESS_COOKIE_PATH = '/'
     JWT_REFRESH_COOKIE_PATH = '/'
     JWT_COOKIE_CSRF_PROTECT = False

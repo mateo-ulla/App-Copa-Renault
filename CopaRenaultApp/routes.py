@@ -194,7 +194,6 @@ def admin_panel():
         user = User.query.get(session.get('user_id'))
     return render_template('admin_panel.html', users=users, teams=teams, fixtures=fixtures, sponsors=sponsors, current_user=user)
 
-# NUEVAS RUTAS Y FUNCIONALIDADES
 @main_bp.route('/profile', methods=['GET', 'POST'])
 @jwt_required()
 def edit_profile():

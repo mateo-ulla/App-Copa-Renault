@@ -8,22 +8,22 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Forzar HTTPS si está en producción
+# forzar HTTPS si está en produccion
 @app.before_request
 def before_request():
     if not app.debug and not request.is_secure:
         url = request.url.replace('http://', 'https://', 1)
         return redirect(url, code=301)
 
-# Inicializar extensiones
+# inicializar extensiones
 db.init_app(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
 
-# Registrar blueprint
+# registrar blueprint
 app.register_blueprint(main_bp)
 
-# Imports necesarios para el manejador de error
+# imports necesarios para el manejador de error
 from flask import flash, session, url_for
 
 
