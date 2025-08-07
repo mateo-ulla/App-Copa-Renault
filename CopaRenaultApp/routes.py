@@ -135,8 +135,8 @@ def fixtures():
     if not data:
         class Dummy:
             pass
-        f1 = Dummy(); f1.id=1; f1.home_team=Dummy(); f1.home_team.name='Renault FC'; f1.away_team=Dummy(); f1.away_team.name='Peugeot United'; f1.date=datetime(2025,7,10,18,0); f1.score_home=2; f1.score_away=1
-        f2 = Dummy(); f2.id=2; f2.home_team=Dummy(); f2.home_team.name='Citroën Stars'; f2.away_team=Dummy(); f2.away_team.name='Fiat Power'; f2.date=datetime(2025,7,11,20,0); f2.score_home=0; f2.score_away=0
+        f1 = Dummy(); f1.id=1; f1.home_team=Dummy(); f1.home_team.name='Renault FC'; f1.away_team=Dummy(); f1.away_team.name='Talleres'; f1.date=datetime(2025,7,10,18,0); f1.score_home=2; f1.score_away=1
+        f2 = Dummy(); f2.id=2; f2.home_team=Dummy(); f2.home_team.name='Belgrano'; f2.away_team=Dummy(); f2.away_team.name='Instituto'; f2.date=datetime(2025,7,11,20,0); f2.score_home=0; f2.score_away=0
         data = [f1, f2]
     user = None
     if session.get('user_id'):
@@ -150,8 +150,8 @@ def results():
     if not data:
         class Dummy:
             pass
-        f1 = Dummy(); f1.id=1; f1.home_team=Dummy(); f1.home_team.name='Renault FC'; f1.away_team=Dummy(); f1.away_team.name='Peugeot United'; f1.score_home=2; f1.score_away=1
-        f2 = Dummy(); f2.id=2; f2.home_team=Dummy(); f2.home_team.name='Citroën Stars'; f2.away_team=Dummy(); f2.away_team.name='Fiat Power'; f2.score_home=0; f2.score_away=0
+        f1 = Dummy(); f1.id=1; f1.home_team=Dummy(); f1.home_team.name='Renault FC'; f1.away_team=Dummy(); f1.away_team.name='Talleres'; f1.score_home=2; f1.score_away=1
+        f2 = Dummy(); f2.id=2; f2.home_team=Dummy(); f2.home_team.name='Belgrano'; f2.away_team=Dummy(); f2.away_team.name='Instituto'; f2.score_home=0; f2.score_away=0
         data = [f1, f2]
     user = None
     if session.get('user_id'):
