@@ -144,21 +144,6 @@ def fixtures():
     return render_template('fixtures.html', fixtures=data, current_user=user)
 
 
-@main_bp.route('/results')
-def results():
-    data = Fixture.query.filter(Fixture.score_home!=None).all()
-    if not data:
-        class Dummy:
-            pass
-        f1 = Dummy(); f1.id=1; f1.home_team=Dummy(); f1.home_team.name='Renault FC'; f1.away_team=Dummy(); f1.away_team.name='Talleres'; f1.score_home=2; f1.score_away=1
-        f2 = Dummy(); f2.id=2; f2.home_team=Dummy(); f2.home_team.name='Belgrano'; f2.away_team=Dummy(); f2.away_team.name='Instituto'; f2.score_home=0; f2.score_away=0
-        data = [f1, f2]
-    user = None
-    if session.get('user_id'):
-        user = User.query.get(session.get('user_id'))
-    return render_template('results.html', fixtures=data, current_user=user)
-
-
 @main_bp.route('/cantina', methods=['GET', 'POST'])
 @jwt_required(optional=True)
 def cantina():
