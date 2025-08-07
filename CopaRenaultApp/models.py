@@ -11,6 +11,7 @@ class User(db.Model):
     email = db.Column(db.String(128), unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(db.String(20), nullable=False)
+    colegio = db.Column(db.String(128), nullable=False)
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
 
 

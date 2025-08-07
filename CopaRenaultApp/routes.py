@@ -29,18 +29,26 @@ def index():
 
 @main_bp.route('/register', methods=['GET','POST'])
 def register():
+    import re
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         role = request.form['role']
         email = request.form.get('email')
+        colegio = request.form.get('colegio')
+        if not re.match(r'^[A-Za-z0-9_]{3,}$', username):
+            flash('El usuario debe tener al menos 3 caracteres y solo letras, números o guiones bajos.')
+            return redirect(url_for('main.register'))
         if User.query.filter_by(username=username).first():
             flash('Usuario existente')
             return redirect(url_for('main.register'))
-        if email and User.query.filter_by(email=email).first():
+        if not email or '@' not in email:
+            flash('El email no tiene un formato válido.')
+            return redirect(url_for('main.register'))
+        if User.query.filter_by(email=email).first():
             flash('Email ya registrado')
             return redirect(url_for('main.register'))
-        user = User(username=username, role=role, email=email)
+        user = User(username=username, role=role, email=email, colegio=colegio)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
@@ -90,8 +98,11 @@ def dashboard():
 
 
 @main_bp.route('/teams', methods=['GET', 'POST'])
-@jwt_required()
+@jwt_required(optional=True)
 def teams():
+    if not session.get('user_id'):
+        flash('Debes iniciar sesión para ver equipos.')
+        return redirect(url_for('main.login'))
     if request.method == 'POST':
         name = request.form['name']
         sport = request.form['sport']
@@ -149,8 +160,11 @@ def results():
 
 
 @main_bp.route('/cantina', methods=['GET', 'POST'])
-@jwt_required()
+@jwt_required(optional=True)
 def cantina():
+    if not session.get('user_id'):
+        flash('Debes iniciar sesión para acceder a la cantina.')
+        return redirect(url_for('main.login'))
     if request.method == 'POST':
         user_id = get_jwt_identity()
         menu = request.form['menu']
@@ -199,16 +213,23 @@ def admin_panel():
 def edit_profile():
     uid = get_jwt_identity()
     user = User.query.get(uid)
+    import re
     if request.method == 'POST':
         username = request.form['username']
         email = request.form.get('email', user.email)
         password = request.form.get('password')
         if username and username != user.username:
+            if not re.match(r'^[A-Za-z0-9_]{3,}$', username):
+                flash('El usuario debe tener al menos 3 caracteres y solo letras, números o guiones bajos.')
+                return redirect(url_for('main.edit_profile'))
             if User.query.filter_by(username=username).first():
                 flash('Usuario ya existe')
                 return redirect(url_for('main.edit_profile'))
             user.username = username
         if email and email != user.email:
+            if '@' not in email:
+                flash('El email no tiene un formato válido.')
+                return redirect(url_for('main.edit_profile'))
             if User.query.filter_by(email=email).first():
                 flash('Email ya registrado')
                 return redirect(url_for('main.edit_profile'))
